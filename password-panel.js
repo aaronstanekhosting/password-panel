@@ -8,6 +8,11 @@ const decodeAsciiAlphanumeric = (n) => {
     return String.fromCharCode(n - 4)
 }
 
+const pseudoLangConsonants = ['b','ch','d','f','h','j','k','l','m','p','r','s','t','w','z']
+const pseudoLangVowels = ['a','e','i','o','u','ai','on']
+
+const decodePseudoLang = (n) => pseudoLangConsonants[Math.trunc(n/7)] + pseudoLangVowels[n%7] + '.'
+
 const randomUint16 = () => {
     const array = new Uint16Array(1)
     window.crypto.getRandomValues(array)
@@ -32,6 +37,16 @@ const randomString = (decoder, range, length) => {
 const insertBang = (baseString) => {
     const index = randomInt(baseString.length + 1)
     return baseString.slice(0, index) + '!' + baseString.slice(index)
+}
+
+const insertPseudoLangSpaces = (baseString) => {
+    const parsed = baseString.split('.')
+    let resultString = ''
+    for (let i = 2; i < parsed.length; i += 3) {
+        if (i !== 2) resultString += ' '
+        resultString += parsed[i-2] + parsed[i-1] + parsed[i]
+    }
+    return resultString
 }
 
 const escapeStringForHtml = (string) => {
@@ -125,7 +140,8 @@ const setup = () => {
         updateStringGenerator(sharedValues, 'pw-alphanumeric-10', () => randomString(decodeAsciiAlphanumeric, 62, 10)),
         updateStringGenerator(sharedValues, 'pw-alphanumeric-bang-30', () => insertBang(randomString(decodeAsciiAlphanumeric, 62, 29))),
         updateStringGenerator(sharedValues, 'pw-alphanumeric-bang-20', () => insertBang(randomString(decodeAsciiAlphanumeric, 62, 19))),
-        updateStringGenerator(sharedValues, 'pw-alphanumeric-bang-10', () => insertBang(randomString(decodeAsciiAlphanumeric, 62, 9)))
+        updateStringGenerator(sharedValues, 'pw-alphanumeric-bang-10', () => insertBang(randomString(decodeAsciiAlphanumeric, 62, 9))),
+        updateStringGenerator(sharedValues, 'readable', () => insertPseudoLangSpaces(randomString(decodePseudoLang, 105, 12))),
     ])
     let generateButton = document.createElement('button')
     document.body.appendChild(generateButton)
@@ -151,6 +167,9 @@ const setup = () => {
     addPasswordDisplay(sharedValues, '20 Alphanumeric with !', 'pw-alphanumeric-bang-20')
     addBr()
     addPasswordDisplay(sharedValues, '10 Alphanumeric with !', 'pw-alphanumeric-bang-10')
+    addBr()
+    addPasswordDisplay(sharedValues, 'Readable', 'readable')
+    addBr()
     setTimeout(updatePanel, 0)
 }
 
