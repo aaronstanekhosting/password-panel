@@ -100,7 +100,7 @@ const createFlipFlop = (leftElem, rightElem) => {
     return inner
 }
 
-const addPasswordDisplay = (sharedValues, text, target) => {
+const addPasswordDisplay = (sharedValues, text, target, entropy) => {
     let div = document.createElement('div')
     document.body.appendChild(div)
     div.style.height = '50px'
@@ -111,9 +111,12 @@ const addPasswordDisplay = (sharedValues, text, target) => {
     button.type = 'button'
     button.innerHTML = escapeStringForHtml(text)
     button.style.marginRight = '30px'
+    button.style.marginBottom = '5px'
     let p = document.createElement('span')
     span.appendChild(p)
     p.id = target
+    span.appendChild(document.createElement('br'))
+    span.appendChild(document.createTextNode(entropy + " bits of entropy"))
     let copied = document.createElement('span')
     div.appendChild(copied)
     copied.innerHTML = 'Copied to Clipboard!'
@@ -150,25 +153,25 @@ const setup = () => {
     generateButton.onclick = updatePanel
     generateButton.style.marginBottom = '100px'
     addBr()
-    addPasswordDisplay(sharedValues, '30 Printable', 'pw-printable-30')
+    addPasswordDisplay(sharedValues, '30 Printable', 'pw-printable-30', 196)
     addBr()
-    addPasswordDisplay(sharedValues, '20 Printable', 'pw-printable-20')
+    addPasswordDisplay(sharedValues, '20 Printable', 'pw-printable-20', 131)
     addBr()
-    addPasswordDisplay(sharedValues, '10 Printable', 'pw-printable-10')
+    addPasswordDisplay(sharedValues, '10 Printable', 'pw-printable-10', 65)
     addBr()
-    addPasswordDisplay(sharedValues, '30 Alphanumeric', 'pw-alphanumeric-30')
+    addPasswordDisplay(sharedValues, '30 Alphanumeric', 'pw-alphanumeric-30', 178)
     addBr()
-    addPasswordDisplay(sharedValues, '20 Alphanumeric', 'pw-alphanumeric-20')
+    addPasswordDisplay(sharedValues, '20 Alphanumeric', 'pw-alphanumeric-20', 119)
     addBr()
-    addPasswordDisplay(sharedValues, '10 Alphanumeric', 'pw-alphanumeric-10')
+    addPasswordDisplay(sharedValues, '10 Alphanumeric', 'pw-alphanumeric-10', 59)
     addBr()
-    addPasswordDisplay(sharedValues, '30 Alphanumeric with !', 'pw-alphanumeric-bang-30')
+    addPasswordDisplay(sharedValues, '30 Alphanumeric with !', 'pw-alphanumeric-bang-30', 183)
     addBr()
-    addPasswordDisplay(sharedValues, '20 Alphanumeric with !', 'pw-alphanumeric-bang-20')
+    addPasswordDisplay(sharedValues, '20 Alphanumeric with !', 'pw-alphanumeric-bang-20', 123)
     addBr()
-    addPasswordDisplay(sharedValues, '10 Alphanumeric with !', 'pw-alphanumeric-bang-10')
+    addPasswordDisplay(sharedValues, '10 Alphanumeric with !', 'pw-alphanumeric-bang-10', 63)
     addBr()
-    addPasswordDisplay(sharedValues, 'Readable', 'readable')
+    addPasswordDisplay(sharedValues, 'Readable', 'readable', 80)
     addBr()
     setTimeout(updatePanel, 0)
 }
